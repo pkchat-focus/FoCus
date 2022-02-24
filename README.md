@@ -52,19 +52,19 @@ The project directory should be follow this directory structure:
 
 
 ### Training the models
-Uncomment the command to start training the model in the **train.sh** file. (Please uncomment the lines in the shell file you want to run.)
+Uncomment the command to start training the model in the **train.sh** file. (Please uncomment the lines in the shell file that you want to run.)
 
     sh train.sh 
 
 
 ### Evaluation
-Uncomment the command in the **test.sh** file, to evaluate the model on the test-set. (Please uncomment the lines in the shell file you want to run.)
+Uncomment the command in the **test.sh** file, to evaluate the model on the test-set. (Please uncomment the lines in the shell file that you want to run.)
 
     sh test.sh
 
 
 ### Inference
-Uncomment the command of the **inference.sh** file, to generate utterances with the trained models. (Please uncomment the lines in the shell file you want to run.)
+Uncomment the command of the **inference.sh** file, to generate utterances with the trained models. (Please uncomment the lines in the shell file that you want to run.)
 
     sh inference.sh
 
