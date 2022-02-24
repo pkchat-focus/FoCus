@@ -15,10 +15,12 @@ Please see **requirements.txt** file for more information.
 ### Dataset
 We put train, valid, test files of the dataset in the **data** folder.
 
-You can download train & valid set in the follwing link:
-LINK
+You can download train & valid set in the following link:
+[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)
 
-Testset will be available after March.
+This data is the modified version of the original data (which is reported in the paper) after ethical inspection.
+
+The test set will be available after March 2022.
 
 You should create directories named **infer_log_focus, train_log_focus, test_log_focus, models** under FoCus folder.
 
@@ -75,4 +77,11 @@ The result files should follow the format below:
 
     {"data": [{"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_0": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_1": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_2": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_3": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_4": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_5": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, ... ]}
 
-(c) 2021 NCSOFT Corporation & Korea University. All rights reserved.
+### Workshop @ COLING 2022
+We are going to hold [the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop) in Octorber 2022.
+Stay tuned for our latest updates!
+
+Written by [Yoonna Jang](https://github.com/YOONNAJANG).
+
+
+(c) 2021 [NCSOFT Corporation](https://kr.ncsoft.com/en/index.do) & [Korea University](http://blp.korea.ac.kr/). All rights reserved.
