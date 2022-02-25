@@ -14,7 +14,7 @@ This data is the modified version of the original data (which is reported in the
 | FoCus v2 STATISTICS | Train | Valid |
 | --- | --- | --- |
 | `# dialogues` | 12,484 | 1,000 |
-| `# average rounds` | 5.63 | 5.64 |
+| `# avg rounds` | 5.63 | 5.64 |
 | `# knowledge-only answers` | 37,488 | 3,007 |
 | `# persona-knowledge answers` | 32,855 | 2,630 |
 | `# landmarks` | 5,152 | 923 |
