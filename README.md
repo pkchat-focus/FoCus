@@ -21,9 +21,9 @@ This data is the modified version of the original data (which is reported in the
 | `avg len of Human's utterances` | 40.70 | 40.21 |
 | `avg len of Machine's utterances` | 138.16 | 138.60 |
 
-We put train, valid, test files of the dataset in the **data** folder. (The test set will be available after March 2022.)
+You should create directories named **`infer_log_focus`, `train_log_focus`, `test_log_focus`, `models`, `data`** under FoCus folder.
 
-You should create directories named **infer_log_focus, train_log_focus, test_log_focus, models** under FoCus folder.
+We put train, valid, test files of the dataset in the **`data`** folder. (The test set will be available after March 2022.)
 
 The project directory should follow this directory structure:
 
