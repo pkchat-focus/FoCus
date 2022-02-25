@@ -12,15 +12,10 @@ We exploited [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch.
 Please see **requirements.txt** file for more information.
 
 
-### Dataset
-We put train, valid, test files of the dataset in the **data** folder.
-
-You can download train & valid set in the following link:
-**[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)**
-
+### Dataset [**[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)**]
 This data is the modified version of the original data (which is reported in the paper) after ethical inspection.
 
-The test set will be available after March 2022.
+We put train, valid, test files of the dataset in the **data** folder. (The test set will be available after March 2022.)
 
 You should create directories named **infer_log_focus, train_log_focus, test_log_focus, models** under FoCus folder.
 
