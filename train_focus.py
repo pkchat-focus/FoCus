@@ -49,9 +49,9 @@ def train():
     parser.add_argument("--kn_coef", type=float, default=1.0, help="Coefficient for knowledge loss")
     parser.add_argument("--lm_coef", type=float, default=10.0, help="Coefficient for LM loss")
     parser.add_argument("--max_history", type=int, default=1, help="Number of previous exchanges to keep in history")
-    parser.add_argument("--train_batch_size", type=int, default=4, help="Batch size for training")
+    parser.add_argument("--train_batch_size", type=int, default=2, help="Batch size for training")
     parser.add_argument("--valid_batch_size", type=int, default=1, help="Batch size for validation")
-    parser.add_argument("--gradient_accumulation_steps", type=int, default=16,
+    parser.add_argument("--gradient_accumulation_steps", type=int, default=32,
                         help="Accumulate gradients on several steps")
     parser.add_argument("--lr", type=float, default=6.25e-5, help="Learning rate")
     parser.add_argument("--max_norm", type=float, default=1.0, help="Clipping gradient norm")
