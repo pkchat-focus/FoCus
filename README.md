@@ -1,6 +1,6 @@
 # Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge
 
-Source code for the baseline models of **Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge**, accepted at AAAI-22 [[paper](https://arxiv.org/abs/2112.08619)].
+Source codes for the baseline models of **Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge**, accepted at AAAI-22 [[paper](https://arxiv.org/abs/2112.08619)].
 
 
 
@@ -16,7 +16,7 @@ Please see **requirements.txt** file for more information.
 We put train, valid, test files of the dataset in the **data** folder.
 
 You can download train & valid set in the following link:
-[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)
+**[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)**
 
 This data is the modified version of the original data (which is reported in the paper) after ethical inspection.
 
@@ -24,7 +24,7 @@ The test set will be available after March 2022.
 
 You should create directories named **infer_log_focus, train_log_focus, test_log_focus, models** under FoCus folder.
 
-The project directory should be follow this directory structure:
+The project directory should follow this directory structure:
 
     📦FoCus
     ┣ 📂data
@@ -77,7 +77,7 @@ The result files should follow the format below:
 
     {"data": [{"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_0": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_1": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_2": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_3": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_4": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_5": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, ... ]}
 
-### Workshop @ [COLING 2022](https://coling2022.org/)
+### Join Our Workshop @ [COLING 2022](https://coling2022.org/)
 We are going to hold **[the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop)** in Octorber 2022.
 Stay tuned for our latest updates!
 
