@@ -11,6 +11,16 @@ We trained the models under the setting of torch==1.5.0, transformers==4.5.0, te
 ### Dataset [**[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)**]
 This data is the modified version of the original data (which is reported in the paper) after ethical inspection.
 
+| FoCus v2 STATISTICS | Train | Valid |
+| --- | --- | --- |
+| `# dialogues` | 12,484 | 1,000 |
+| `# average rounds` | 5.63 | 5.64 |
+| `# knowledge-only answers` | 37,488 | 3,007 |
+| `# persona-knowledge answers` | 32,855 | 2,630 |
+| `# landmarks` | 5,152 | 923 |
+| `avg len of Human's utterances` | 40.70 | 40.21 |
+| `avg len of Machine's utterances` | 138.16 | 138.60 |
+
 We put train, valid, test files of the dataset in the **data** folder. (The test set will be available after March 2022.)
 
 You should create directories named **infer_log_focus, train_log_focus, test_log_focus, models** under FoCus folder.
