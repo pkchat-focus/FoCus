@@ -5,9 +5,7 @@ Source codes for the baseline models of **[Call for Customized Conversation: Cus
 
 
 ### Environment Setting
-We trained the models under the setting of torch==1.5.0, transformers==4.5.0, tensorboardX==2.1 with one RTX8000 GPU.
-
-We exploited [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch.
+We trained the models under the setting of torch==1.5.0, transformers==4.5.0, tensorboardX==2.1 with one RTX8000 GPU. Also, we utilized [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch in [ignite](https://github.com/pkchat-focus/FoCus/tree/main/ignite) folder.
 
 
 ### Dataset [**[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)**]
