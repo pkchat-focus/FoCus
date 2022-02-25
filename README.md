@@ -64,14 +64,6 @@ Uncomment the command of the **inference.sh** file, to generate utterances with 
     sh inference.sh
 
 
-### Evaluate the submitted results from the leaderboard. Please specify the file name as an argument 'file_name'. We made a fake result file and used it.
-    CUDA_VISIBLE_DEVICES=? python evaluation_leaderboard.py
-
-The submitted files should include 6 generated machine's utterance per one dialog, and persona_pred with bool expression, knowledge_pred with integer (0-9) for each utterance.
-The result files should follow the format below:
-
-    {"data": [{"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_0": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_1": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_2": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_3": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_4": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_5": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, ... ]}
-
 ### Join Our Workshop @ [COLING 2022](https://coling2022.org/)
 We are going to hold **[the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop)** in Octorber 2022.
 Stay tuned for our latest updates!
