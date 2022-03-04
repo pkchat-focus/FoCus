@@ -318,7 +318,7 @@ def build_input_from_segments_bart_inctxt(persona, knowledge, history, persona_c
 
     instance = {}
     instance["input_ids"] = list(chain(*enc_sequence))
-    instance["input_eos"] = len(list(chain(*enc_sequence)))
+    instance["input_eos"] = len(list(chain(*enc_sequence))) - 1
     instance["dialog"] = list(chain(*dialog))
     instance["decoder_input_ids"] = dec_sequence
     instance["token_type_ids"] = reply_tti
