@@ -5,10 +5,23 @@ Source codes for the baseline models of **[Call for Customized Conversation: Cus
 
 
 ### Environment Setting
-We trained the models under the setting of `torch==1.5.0`, `transformers==4.5.0`, `tensorboardX==2.1` with one RTX8000 GPU. Also, our codes are built on the codes of [huggingface](https://github.com/huggingface/transfer-learning-conv-ai), and we utilized [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch in [`ignite`](https://github.com/pkchat-focus/FoCus/tree/main/ignite) folder.
+We trained the models under the setting of `python==3.7` and `torch==1.5.0`,  with one RTX8000 GPU. Also, our codes are built on the codes of [huggingface](https://github.com/huggingface/transfer-learning-conv-ai), and we utilized [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch in [`ignite`](https://github.com/pkchat-focus/FoCus/tree/main/ignite) folder.
+
+1.Make a virtual environment
+    
+    $conda create -n ENV_NAME python=3.7
+
+2.Install `pytorch==1.5.0`
+
+    $conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
+
+3.Install the required libraries.
+    
+    $pip install -r requirements.txt
+    
 
 
-### Dataset [**[FoCus dataset v2](https://drive.google.com/file/d/1bHqYj-tWgd0i1Wnst-bJ30lYrmRwTPd-/view?usp=sharing)**]
+### Dataset [**[FoCus dataset v2](https://drive.google.com/file/d/1YmEW12HqjAjlEfZ05g8VLRux8kyUjdcI/view?usp=sharing)**]
 This data is the modified version of the original data (which is reported in the paper) after ethical inspection.
 
 | FoCus v2 STATISTICS | Train | Valid |
@@ -26,6 +39,7 @@ You should create directories named **`infer_log_focus`, `train_log_focus`, `tes
 We put train, valid, test files of the dataset in the **`data`** folder. (The test set will be available after March 2022.)
 
 The project directory should follow this directory structure:
+
 
     📦FoCus
     ┣ 📂data
