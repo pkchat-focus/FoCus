@@ -11,7 +11,6 @@ from data_utils import get_testdata_loaders, add_special_tokens_
 from inference_test import sample_sequence
 from ignite.metrics import Accuracy
 from datasets import load_metric
-#from nltk.translate.chrf_score import sentence_chrf
 from torchmetrics import CHRFScore
 from rouge_score import rouge_scorer
 logger = logging.getLogger(__file__)
