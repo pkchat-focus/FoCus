@@ -137,10 +137,6 @@ def run():
         rl = 0
         bleu = 0
         chrf1 = 0
-        # b1 = Bleu(ngram=1)
-        # b2 = Bleu(ngram=2)
-        # b3 = Bleu(ngram=3)
-        # b4 = Bleu(ngram=4)
         rouge_metric = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
         bleu_metric = load_metric("sacrebleu")
         chrf_metric = CHRFScore()
@@ -221,8 +217,8 @@ def run():
 
 
                 softmax = Softmax(dim=-1)
-                knowledge_pred = softmax(knowledge_logits)
-                _, k_index_1 = torch.topk(knowledge_pred, k=1, dim=-1)
+                knowledge_softmax = softmax(knowledge_logits)
+                _, k_index_1 = torch.topk(knowledge_softmax, k=1, dim=-1)
                 all_knowledge_pred = []
                 for batch_i in range(args.test_batch_size):
                     knowledge_pred_idx = k_index_1[batch_i]
@@ -334,8 +330,6 @@ def run():
                     knowledge_pred = knowledge_pred[1:-2]
                     all_knowledge_pred.append(knowledge_pred) #delete bos, knowledge_st, eos
 
-                k_index_1 = k_index_1.squeeze(0)
-                k_index_cvtd = torch.tensor([1 if num in k_index_1 else 0 for num in range(10)], device=args.device)
 
                 final_input_list = []
                 for batch_i in range(args.test_batch_size):
@@ -396,8 +390,7 @@ def run():
             pg_res = pg.compute()
 
             # KG
-            k_label_cvtd = torch.tensor([1 if num in knowledge_grounding else 0 for num in range(10)], device=args.device)
-            kg.update((k_index_cvtd, k_label_cvtd))
+            kg.update((knowledge_softmax, knowledge_grounding))
             kg_res = kg.compute()
 
 
