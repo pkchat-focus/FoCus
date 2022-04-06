@@ -265,9 +265,9 @@ class BARTPK_ctxt(BartForConditionalGeneration):
 
     def __init__(self, config):
         super().__init__(config)
-
+        #config.vocab_size = config.vocab_size + 4
         self.model = BartModel(config)
-        self.lm_head = nn.Linear(config.d_model, config.vocab_size + 4, bias=False)
+        self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         self.concat_summary = ConcatSummary(emb_dim=config.d_model)
         self.summary = Summary(emb_dim=config.d_model)
         self.attn1 = nn.Linear(config.d_model, 5)

@@ -284,7 +284,7 @@ def train():
             lm_idx_only = lm_idx[mask].tolist()
 
             return (lm_logits_flat_shifted, knowledge_logits, persona_logits, persona_pred_sigmoid, k_index_1_cvtd, knowledge_pred, lm_idx_only), \
-                   (lm_labels_flat_shifted, knowledge_grounding, persona_grounding.type_as(persona_logits), k_label_cvtd, lm_labels_only)
+                   (lm_labels_flat_shifted, knowledge_grounding, persona_grounding.type_as(persona_logits), lm_labels_only)
 
     evaluator = Engine(inference)
 
@@ -313,7 +313,7 @@ def train():
         "lm_loss": Loss(torch.nn.CrossEntropyLoss(ignore_index=-100), output_transform=lambda x: (x[0][0], x[1][0])),
         "knowledge_loss": Loss(torch.nn.CrossEntropyLoss(), output_transform=lambda x: (x[0][1], x[1][1])),
         "persona_loss": Loss(torch.nn.BCEWithLogitsLoss(), output_transform=lambda x: (x[0][2], x[1][2])),
-        "Knowledge_acc": Accuracy(output_transform=lambda x: (x[0][5], x[1][3])),
+        "Knowledge_acc": Accuracy(output_transform=lambda x: (x[0][5], x[1][1])),
         "Persona_acc":Accuracy(output_transform=lambda x: (x[0][3], x[1][2]))}
 
     metrics.update({"average_lm_loss": MetricsLambda(average_distributed_scalar, metrics["lm_loss"], args),
