@@ -449,7 +449,7 @@ def get_data_loaders(args, tokenizer, generation=False):
             testset = True
         else:
             testset = False
-        for dialog in dataset[:10]:
+        for dialog in dataset:
             ID = dialog["dialogID"]
             persona = dialog['persona']
             knowledge = dialog['knowledge']
