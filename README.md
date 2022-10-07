@@ -90,6 +90,7 @@ We are going to hold **[the 1st workshop on Customized Chat Grounding Persona an
 
 ### Citation
 To use our data or source code, please cite our paper:
+
     @inproceedings{jang2022call,
       title={Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge},
       author={Jang, Yoonna and Lim, Jungwoo and Hur, Yuna and Oh, Dongsuk and Son, Suhyune and Lee, Yeonsoo and Shin, Donghoon and Kim, Seungryong and Lim, Heuiseok},
