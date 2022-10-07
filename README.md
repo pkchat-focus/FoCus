@@ -84,9 +84,22 @@ Uncomment the command lines in the **`inference.sh`** file, to generate utteranc
     $ sh inference.sh
 
 
-### Join Our Workshop @ [COLING 2022](https://coling2022.org/)
+### Our Workshop @ [COLING 2022](https://coling2022.org/)
 We are going to hold **[the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop)** in Octorber 2022.
-Stay tuned for our latest updates!
+
+
+### Citation
+To use our data or source code, please cite our paper:
+
+    @inproceedings{jang2022call,
+      title={Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge},
+      author={Jang, Yoonna and Lim, Jungwoo and Hur, Yuna and Oh, Dongsuk and Son, Suhyune and Lee, Yeonsoo and Shin, Donghoon and Kim, Seungryong and Lim, Heuiseok},
+      booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+      volume={36},
+      number={10},
+      pages={10803--10812},
+      year={2022}
+    }
 
 Written by [Yoonna Jang](https://github.com/YOONNAJANG).
 
