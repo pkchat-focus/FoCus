@@ -9,10 +9,13 @@ import torch.nn.functional as F
 from torch.nn import Sigmoid, Softmax, CrossEntropyLoss
 from data_utils import get_testdata_loaders, add_special_tokens_
 from inference_test import sample_sequence
-from ignite.metrics import Bleu, RougeL, RougeN, Accuracy
-from ignite.metrics.precision import CharPrecision
-from ignite.metrics.recall import CharRecall
+from ignite.metrics import Accuracy
+from datasets import load_metric
+from torchmetrics import CHRFScore
+from rouge_score import rouge_scorer
 logger = logging.getLogger(__file__)
+from setproctitle import setproctitle
+setproctitle('Yoonna')
 
 SPECIAL_TOKENS = ["<machine>", "<human>", "<persona>", "<knowledge>"]
 
@@ -59,8 +62,8 @@ def top_filtering(logits, top_k=0., top_p=0.9, threshold=-float('Inf'), filter_v
 
 def run():
     parser = ArgumentParser()
-    parser.add_argument("--test_dataset_path", type=str, default="data/test_focus.json", help="Path or url of the dataset. If empty download from S3.")
-    parser.add_argument("--test_dataset_cache", type=str, default='data/focus_cache.tar.gz', help="Path or url of the dataset cache")
+    parser.add_argument("--test_dataset_path", type=str, default="/home/mnt/yoonna/FoCus_v1/test_focus.json", help="Path or url of the dataset. If empty download from S3.") #data
+    parser.add_argument("--test_dataset_cache", type=str, default='/home/mnt/yoonna/FoCus_v1/focus_cache.tar.gz', help="Path or url of the dataset cache")
     parser.add_argument("--model_name", type=str, default="", help="{GPT2, BART, transformer-decoder, transformer-encdec}")
     parser.add_argument("--model_checkpoint", type=str, default="", help="Path, url or short name of the model")
     parser.add_argument("--max_history", type=int, default=1, help="Number of previous utterances to keep in history")
@@ -129,19 +132,22 @@ def run():
     test_loader, test_sampler = get_testdata_loaders(args, tokenizer, generation=True)
 
     with torch.no_grad():
-        r1 = RougeN(ngram=1)
-        r2 = RougeN(ngram=2)
-        rl = RougeL()
-        b1 = Bleu(ngram=1)
-        b2 = Bleu(ngram=2)
-        b3 = Bleu(ngram=3)
-        b4 = Bleu(ngram=4)
-        pre = CharPrecision()
-        rec = CharRecall()
+        r1 = 0
+        r2 = 0
+        rl = 0
+        bleu = 0
+        chrf1 = 0
+        rouge_metric = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
+        bleu_metric = load_metric("sacrebleu")
+        chrf_metric = CHRFScore()
+
         pg = Accuracy()
         kg = Accuracy()
 
-        for test_data in tqdm(test_loader):
+        pass_num = 0
+        test_pass_list = []
+
+        for test_data_index, test_data in enumerate(tqdm(test_loader)):
             loss_fct = CrossEntropyLoss(ignore_index=-100)
             if model.config.model_type == 'gpt2':
                 input_ids, input_eos, lm_labels, token_type_ids, mc_token_ids, persona_candidates, persona_can_idx, persona_grounding, knowledge_candidates, \
@@ -152,8 +158,15 @@ def run():
                 knowledge_can_idx, knowledge_grounding, tot_knowledge, tot_knowledge_eos, reply, dialog = test_data
             else:
                 raise NotImplementedError
+
             mask = (reply != tokenizer.pad_token_id)
             reply = reply[mask]
+
+            #print('reply.tolist() ', reply.tolist())
+            if len(reply.tolist()) == 0:
+                pass_num += 1
+                test_pass_list.append(test_data_index)
+                continue
 
             if model.config.model_type == 'gpt2':
                 output = model(
@@ -204,8 +217,8 @@ def run():
 
 
                 softmax = Softmax(dim=-1)
-                knowledge_pred = softmax(knowledge_logits)
-                _, k_index_1 = torch.topk(knowledge_pred, k=1, dim=-1)
+                knowledge_softmax = softmax(knowledge_logits)
+                _, k_index_1 = torch.topk(knowledge_softmax, k=1, dim=-1)
                 all_knowledge_pred = []
                 for batch_i in range(args.test_batch_size):
                     knowledge_pred_idx = k_index_1[batch_i]
@@ -317,8 +330,6 @@ def run():
                     knowledge_pred = knowledge_pred[1:-2]
                     all_knowledge_pred.append(knowledge_pred) #delete bos, knowledge_st, eos
 
-                k_index_1 = k_index_1.squeeze(0)
-                k_index_cvtd = torch.tensor([1 if num in k_index_1 else 0 for num in range(10)], device=args.device)
 
                 final_input_list = []
                 for batch_i in range(args.test_batch_size):
@@ -352,37 +363,26 @@ def run():
 
 
             gold_reply = reply
+            #print('reply', reply)
 
             for special_token in special_tokens_list:
-                    out_ids = [value for value in out_ids if value != special_token]
-            gold_reply = gold_reply.tolist()
-            pred_reply = out_ids
+                   out_ids = [value for value in out_ids if value != special_token]
+
+            gold_reply = tokenizer.decode(gold_reply.tolist(), skip_special_tokens=True)
+            pred_reply = tokenizer.decode(out_ids, skip_special_tokens=True)
+            #print('gold: ', gold_reply, 'pred: ', pred_reply)
 
             #ROUGE
-            r1.update((pred_reply, [gold_reply]))
-            r2.update((pred_reply, [gold_reply]))
-            rl.update((pred_reply, [gold_reply]))
-            r1_res = r1.compute()
-            r2_res = r2.compute()
-            rl_res = rl.compute()
+            r = rouge_metric.score(pred_reply, gold_reply)
+            r1 += r['rouge1'].fmeasure
+            r2 += r['rouge2'].fmeasure
+            rl += r['rougeL'].fmeasure
 
             #BLEU1,2,3,4 / BLEU avg
-            b1.update((pred_reply, [gold_reply]))
-            b2.update((pred_reply, [gold_reply]))
-            b3.update((pred_reply, [gold_reply]))
-            b4.update((pred_reply, [gold_reply]))
-            b1_res = b1.compute()
-            b2_res = b2.compute()
-            b3_res = b3.compute()
-            b4_res = b4.compute()
+            bleu += bleu_metric.compute(predictions=[pred_reply], references=[[gold_reply]])['score']
 
             #CharF1
-            tensor_pred = torch.tensor(pred_reply).type(torch.cuda.FloatTensor)
-            tensor_gold = torch.tensor(gold_reply).type(torch.cuda.FloatTensor)
-            pre.update((tensor_pred, tensor_gold))
-            rec.update((tensor_pred, tensor_gold))
-            pre_res = pre.compute()
-            rec_res = rec.compute()
+            chrf1 += chrf_metric([pred_reply], [[gold_reply]])
 
             # PG
             p_label_cvtd = torch.tensor([1 if num in persona_grounding else 0 for num in range(5)], device=args.device)
@@ -390,23 +390,25 @@ def run():
             pg_res = pg.compute()
 
             # KG
-            k_label_cvtd = torch.tensor([1 if num in knowledge_grounding else 0 for num in range(10)], device=args.device)
-            kg.update((k_index_cvtd, k_label_cvtd))
+            kg.update((knowledge_softmax, knowledge_grounding))
             kg_res = kg.compute()
 
-            bleu_res = (b1_res.item() + b2_res.item() + b3_res.item() + b4_res.item())/4
 
-            precision = pre_res.item()
-            recall = rec_res.item()
-            f1_res = (1.0 + 1 ** 2) * precision * recall / (1 ** 2 * precision + recall + 1e-15)
-
-        print("F1: ", f1_res)
-        print("ROUGE1", r1_res)
-        print("ROUGE2", r2_res)
-        print("ROUGEL", rl_res)
-        print("avg BLEU: ", bleu_res)
-        print("PG: ", pg_res)
-        print("KG: ", kg_res)
+        chrf1_result = chrf1/(test_data_index+1-pass_num)
+        rouge1_result = r1/(test_data_index+1-pass_num)
+        rouge2_result = r2/(test_data_index+1-pass_num)
+        rougel_result = rl/(test_data_index+1-pass_num)
+        bleu_result = bleu/(test_data_index+1-pass_num)
+        pg_result = pg_res
+        kg_result = kg_res
+        print('test pass list: ', test_pass_list, 'len: ', pass_num)
+        print("F1: ", chrf1_result)
+        print("ROUGE1", rouge1_result)
+        print("ROUGE2", rouge2_result)
+        print("ROUGEL", rougel_result)
+        print("avg BLEU: ", bleu_result)
+        print("PG: ", pg_result)
+        print("KG: ", kg_result)
 
 
 if __name__ == "__main__":

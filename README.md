@@ -1,28 +1,45 @@
 # Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge
 
-Source code for the baseline models of **Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge**, accepted at AAAI-22 [[paper](https://arxiv.org/abs/2112.08619)].
+Source codes for the baseline models of **[Call for Customized Conversation: Customized Conversation Grounding Persona and Knowledge](https://arxiv.org/abs/2112.08619)**, accepted at [AAAI-22](https://aaai.org/Conferences/AAAI-22/).
 
 
 
 ### Environment Setting
-We trained the models under the setting of torch==1.5.0, transformers==4.5.0, tensorboardX==2.1, etc.
+We trained the models under the setting of `python==3.7` and `torch==1.5.0`,  with one RTX8000 GPU. Also, our codes are built on the codes of [huggingface](https://github.com/huggingface/transfer-learning-conv-ai), and we utilized [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch in [`ignite`](https://github.com/pkchat-focus/FoCus/tree/main/ignite) folder.
 
-We exploited [pytorch-ignite](https://github.com/pytorch/ignite) from pytorch.
+1.Make a virtual environment
+    
+    $conda create -n ENV_NAME python=3.7
 
-Please see **requirements.txt** file for more information.
+2.Install `pytorch==1.5.0`
+
+    $conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
+
+3.Install the required libraries.
+    
+    $pip install -r requirements.txt
+    
 
 
-### Dataset
-We put train, valid, test files of the dataset in the **data** folder.
+### Dataset [**[FoCus dataset v2](https://drive.google.com/file/d/1YmEW12HqjAjlEfZ05g8VLRux8kyUjdcI/view?usp=sharing)**]
+This data is the modified version of the original data (which is reported in the paper) after ethical inspection.
 
-You can download train & valid set in the follwing link:
-LINK
+| FoCus v2 STATISTICS | Train | Valid |
+| --- | --- | --- |
+| `# dialogues` | 12,484 | 1,000 |
+| `# avg rounds` | 5.63 | 5.64 |
+| `# knowledge-only answers` | 37,488 | 3,007 |
+| `# persona-knowledge answers` | 32,855 | 2,630 |
+| `# landmarks` | 5,152 | 923 |
+| `avg len of Human's utterances` | 40.70 | 40.21 |
+| `avg len of Machine's utterances` | 138.16 | 138.60 |
 
-Testset will be available after March.
+You should create directories named **`infer_log_focus`, `train_log_focus`, `test_log_focus`, `models`, `data`** under FoCus folder.
 
-You should create directories named **infer_log_focus, train_log_focus, test_log_focus, models** under FoCus folder.
+We put train, valid, test files of the dataset in the **`data`** folder. (The test set will be available after March 2022.)
 
-The project directory should be follow this directory structure:
+The project directory should follow this directory structure:
+
 
     📦FoCus
     ┣ 📂data
@@ -50,29 +67,28 @@ The project directory should be follow this directory structure:
 
 
 ### Training the models
-Uncomment the command to start training the model in the **train.sh** file.
+Uncomment the command lines in the **`train.sh`** file, to start training the model. 
 
-    sh train.sh 
+    $ sh train.sh 
 
 
 ### Evaluation
-Uncomment the command in the **test.sh** file, to evaluate the model on the test-set.
+Uncomment the command lines in the **`test.sh`** file, to evaluate the model on the test set. 
 
-    sh test.sh
+    $ sh test.sh
 
 
 ### Inference
-Uncomment the command of the **inference.sh** file, to generate utterances with the trained models.
+Uncomment the command lines in the **`inference.sh`** file, to generate utterances with the trained models.
 
-    sh inference.sh
+    $ sh inference.sh
 
 
-### Evaluate the submitted results from the leaderboard. Please specify the file name as an argument 'file_name'. We made a fake result file and used it.
-    CUDA_VISIBLE_DEVICES=? python evaluation_leaderboard.py
+### Join Our Workshop @ [COLING 2022](https://coling2022.org/)
+We are going to hold **[the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop)** in Octorber 2022.
+Stay tuned for our latest updates!
 
-The submitted files should include 6 generated machine's utterance per one dialog, and persona_pred with bool expression, knowledge_pred with integer (0-9) for each utterance.
-The result files should follow the format below:
+Written by [Yoonna Jang](https://github.com/YOONNAJANG).
 
-    {"data": [{"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_0": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_1": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_2": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_3": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_4": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, {"persona_pred": [false, false, true, true, false], "knowledge_pred": 8, "machine_utt_5": ["It's the Museum of History and Industry, you love museum."], "dialog_ID": "JLG63YRTYNF3"}, ... ]}
 
-(c) 2021 NCSOFT Corporation & Korea University. All rights reserved.
+(c) 2021 [NCSOFT Corporation](https://kr.ncsoft.com/en/index.do) & [Korea University](http://blp.korea.ac.kr/). All rights reserved.

@@ -272,16 +272,8 @@ def train():
             _, k_index_5 = torch.topk(knowledge_pred, k=5, dim=-1)
             k_index_1, k_index_5 = k_index_1.squeeze(0), k_index_5.squeeze(0)
             k_index_1_cvtd = torch.tensor([1 if num in k_index_1 else 0 for num in range(10)], device=args.device)
-            k_index_5_cvtd = torch.tensor([1 if num in k_index_5 else 0 for num in range(10)], device=args.device)
             k_label_cvtd = torch.tensor([1 if num in knowledge_grounding else 0 for num in range(10)],
                                         device=args.device)
-            persona_pred = softmax(persona_logits)
-            _, p_index_1 = torch.topk(persona_pred, k=1, dim=-1)
-            _, p_index_5 = torch.topk(persona_pred, k=5, dim=-1)
-            p_index_1, p_index_5 = p_index_1.squeeze(0), p_index_5.squeeze(0)
-            p_index_1_cvtd = torch.tensor([1 if num in p_index_1 else 0 for num in range(11)], device=args.device)
-            p_index_5_cvtd = torch.tensor([1 if num in p_index_5 else 0 for num in range(11)], device=args.device)
-            p_label_cvtd = torch.tensor([1 if num in persona_grounding else 0 for num in range(11)], device=args.device)
 
             lm_pred = softmax(lm_logits_flat_shifted)
             lm_val, lm_idx = torch.topk(lm_pred, k=1, dim=-1)
@@ -291,10 +283,8 @@ def train():
             lm_labels_only = [lm_labels_flat_shifted[mask].tolist()]
             lm_idx_only = lm_idx[mask].tolist()
 
-            return (lm_logits_flat_shifted, knowledge_logits, persona_logits, persona_pred_sigmoid, k_index_1_cvtd,
-                    k_index_5_cvtd, p_index_1_cvtd, p_index_5_cvtd, lm_idx_only), \
-                   (lm_labels_flat_shifted, knowledge_grounding, persona_grounding.type_as(persona_logits), k_label_cvtd,
-                   p_label_cvtd, lm_labels_only)
+            return (lm_logits_flat_shifted, knowledge_logits, persona_logits, persona_pred_sigmoid, k_index_1_cvtd, knowledge_pred, lm_idx_only), \
+                   (lm_labels_flat_shifted, knowledge_grounding, persona_grounding.type_as(persona_logits), lm_labels_only)
 
     evaluator = Engine(inference)
 
@@ -323,30 +313,14 @@ def train():
         "lm_loss": Loss(torch.nn.CrossEntropyLoss(ignore_index=-100), output_transform=lambda x: (x[0][0], x[1][0])),
         "knowledge_loss": Loss(torch.nn.CrossEntropyLoss(), output_transform=lambda x: (x[0][1], x[1][1])),
         "persona_loss": Loss(torch.nn.BCEWithLogitsLoss(), output_transform=lambda x: (x[0][2], x[1][2])),
-        "Knowledge_acc": Accuracy(output_transform=lambda x: (x[0][4], x[1][3])),
-        "Persona_acc":Accuracy(output_transform=lambda x:(x[0][3], x[1][2])),
-        "BLEU1": Bleu(ngram=1, output_transform=lambda x: (x[0][8], x[1][5])),
-        "BLEU2": Bleu(ngram=2, output_transform=lambda x: (x[0][8], x[1][5])),
-        "BLEU3": Bleu(ngram=3, output_transform=lambda x: (x[0][8], x[1][5])),
-        "BLEU4": Bleu(ngram=4, output_transform=lambda x: (x[0][8], x[1][5])),
-        "Rouge1": RougeN(ngram=1, output_transform=lambda x: (x[0][8], x[1][5])),
-        "Rouge2": RougeN(ngram=2, output_transform=lambda x: (x[0][8], x[1][5])),
-        "RougeL": RougeL(output_transform=lambda x: (x[0][8], x[1][5])),
-        "F1": CharFbeta(beta=1, output_transform=lambda x: (torch.tensor(x[0][8]), torch.tensor(x[1][5][0])))}
+        "Knowledge_acc": Accuracy(output_transform=lambda x: (x[0][5], x[1][1])),
+        "Persona_acc":Accuracy(output_transform=lambda x: (x[0][3], x[1][2]))}
 
     metrics.update({"average_lm_loss": MetricsLambda(average_distributed_scalar, metrics["lm_loss"], args),
                     "average_knowledge_loss": MetricsLambda(average_distributed_scalar, metrics["knowledge_loss"],args),
                     "average_persona_loss": MetricsLambda(average_distributed_scalar, metrics["persona_loss"], args),
                     "average_Knowledge_acc": MetricsLambda(average_distributed_scalar, metrics["Knowledge_acc"], args),
-                    "average_Persona_acc": MetricsLambda(average_distributed_scalar, metrics["Persona_acc"], args),
-                    "average_BLEU1": MetricsLambda(average_distributed_scalar, metrics["BLEU1"], args),
-                    "average_BLEU2": MetricsLambda(average_distributed_scalar, metrics["BLEU2"], args),
-                    "average_BLEU3": MetricsLambda(average_distributed_scalar, metrics["BLEU3"], args),
-                    "average_BLEU4": MetricsLambda(average_distributed_scalar, metrics["BLEU4"], args),
-                    "average_Rouge1": MetricsLambda(average_distributed_scalar, metrics["Rouge1"], args),
-                    "average_Rouge2": MetricsLambda(average_distributed_scalar, metrics["Rouge2"], args),
-                    "average_RougeL": MetricsLambda(average_distributed_scalar, metrics["RougeL"], args),
-                    "average_F1": MetricsLambda(average_distributed_scalar, metrics["F1"], args)
+                    "average_Persona_acc": MetricsLambda(average_distributed_scalar, metrics["Persona_acc"], args)
                     })
 
     metrics["average_ppl"] = MetricsLambda(math.exp, metrics["average_lm_loss"])

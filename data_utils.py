@@ -245,7 +245,8 @@ def add_special_tokens_(model, tokenizer):
     if type(tokenizer).__name__ == 'GPT2Tokenizer':
         ATTR_TO_SPECIAL_TOKEN['pad_token'] = '<pad>'
         print('<pad> token added!')
-    num_added_tokens = tokenizer.add_special_tokens(ATTR_TO_SPECIAL_TOKEN) # doesn't add if they are already there
+    tokenizer.add_special_tokens(ATTR_TO_SPECIAL_TOKEN) # doesn't add if they are already there
+    num_added_tokens = len(SPECIAL_TOKENS)
     print("orig num", orig_num_tokens, "num_added", num_added_tokens) #50265, 4
     if num_added_tokens > 0:
         model.resize_token_embeddings(new_num_tokens=orig_num_tokens + num_added_tokens)
@@ -318,7 +319,7 @@ def build_input_from_segments_bart_inctxt(persona, knowledge, history, persona_c
 
     instance = {}
     instance["input_ids"] = list(chain(*enc_sequence))
-    instance["input_eos"] = len(list(chain(*enc_sequence)))
+    instance["input_eos"] = len(list(chain(*enc_sequence))) - 1
     instance["dialog"] = list(chain(*dialog))
     instance["decoder_input_ids"] = dec_sequence
     instance["token_type_ids"] = reply_tti
