@@ -85,7 +85,11 @@ Uncomment the command lines in the **`inference.sh`** file, to generate utteranc
 
 
 ### Our Workshop @ [COLING 2022](https://coling2022.org/)
-We are going to hold **[the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop)** in Octorber 2022.
+We held **[the 1st workshop on Customized Chat Grounding Persona and Knowledge](https://sites.google.com/view/persona-knowledge-workshop)** at COLING 2022.
+
+
+### Official Test Set
+You can evaluate your model on the official test set [here](https://codalab.lisn.upsaclay.fr/competitions/3754).
 
 
 ### Citation
